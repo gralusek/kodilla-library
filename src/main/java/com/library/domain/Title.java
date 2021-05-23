@@ -1,8 +1,6 @@
 package com.library.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
-@Getter
 @AllArgsConstructor
+@Data
 @Entity(name = "titles")
 public class Title {
 
@@ -36,4 +34,11 @@ public class Title {
             fetch = FetchType.EAGER
     )
     private List<Book> books = new ArrayList<>();
+
+    public Title(String title, String author, LocalDate yearOfPublication, List<Book> books) {
+        this.title = title;
+        this.author = author;
+        this.yearOfPublication = yearOfPublication;
+        this.books = new ArrayList<>();
+    }
 }

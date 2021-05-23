@@ -1,8 +1,6 @@
 package com.library.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
-@Getter
 @AllArgsConstructor
+@Data
 @Entity(name = "readers")
 public class Reader {
 
@@ -33,7 +31,7 @@ public class Reader {
             targetEntity = Borrow.class,
             mappedBy = "reader",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     private List<Borrow> borrows = new ArrayList<>();
 

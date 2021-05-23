@@ -1,16 +1,14 @@
 package com.library.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
-@Getter
 @AllArgsConstructor
+@Data
 @Entity(name = "books")
 public class Book {
 
@@ -19,17 +17,10 @@ public class Book {
     @Column(name = "book_id")
     private Long id;
 
-/*    @Column(name = "title_id")
-    private String titleId;*/
-
     @Column(name = "status")
-    private String status;
+    private BookStatus status;
 
-    public void changeStatus(String status) {
-        this.status = status;
-    }
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "title_id")
     private Title title;
 
@@ -37,7 +28,13 @@ public class Book {
             targetEntity = Borrow.class,
             mappedBy = "book",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     public List<Borrow> borrows = new ArrayList<>();
+
+    public Book(BookStatus status, Title title, List<Borrow> borrows) {
+        this.status = status;
+        this.title = title;
+        this.borrows = new ArrayList<>();
+    }
 }
