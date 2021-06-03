@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -29,6 +31,18 @@ public class BorrowService {
     @Autowired
     BookService bookService;
 
+    public Optional<Borrow> findById(Long id) {
+        return borrowRepository.findById(id);
+    }
+
+    public List<Borrow> findAll() {
+        return borrowRepository.findAll();
+    }
+
+    public void deleteById(Long id) {
+        borrowRepository.deleteById(id);
+    }
+
     public void borrow(Long bookId, Long readerId) {
         Book book = bookRepository
                 .findById(bookId)
@@ -36,10 +50,11 @@ public class BorrowService {
         Reader reader = readerRepository
                 .findById(readerId)
                 .orElseThrow(() -> new RuntimeException("Reader with given ID was not found"));
-        bookService.changeStatus(bookId, BookStatus.BORROWED);
+        bookService.changeStatus(book.getId(), BookStatus.BORROWED);
         Borrow borrow = new Borrow(reader, book);
 
         borrowRepository.save(borrow);
+
     }
 
     public void returnBook(long borrowId) {

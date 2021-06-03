@@ -28,6 +28,6 @@ public class BookController {
 
     @PutMapping
     public void changeStatus(@RequestParam Long bookId, @RequestParam BookStatus bookStatus) {
-        bookService.changeStatus(bookId,bookStatus);
+        bookService.changeStatus(bookId, bookStatus);
     }
 }

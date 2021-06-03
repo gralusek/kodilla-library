@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -21,6 +23,85 @@ class TitleServiceTestSuite {
 
     @Autowired
     TitleService titleService;
+
+    @Test
+    void testAddTitle() {
+        //Given
+        Title title = new Title();
+
+        //When
+        titleRepository.save(title);
+
+        //Then
+        assertTrue(titleRepository.existsById(title.getId()));
+
+        //Cleanup
+        try {
+            titleRepository.deleteById(title.getId());
+        } catch (Exception e) {
+            System.out.println("There were errors");
+        }
+    }
+
+    @Test
+    void testFindById() {
+        //Given
+        Title title = new Title();
+
+        //When
+        titleRepository.save(title);
+        Optional<Title> title2 = titleRepository.findById(title.getId());
+
+        //Then
+        assertEquals(title.getId(), title2.get().getId());
+
+        //Cleanup
+        try {
+            titleRepository.deleteById(title.getId());
+        } catch (Exception e) {
+            System.out.println("There were errors");
+        }
+    }
+
+    @Test
+    void testFindAll() {
+        titleRepository.deleteAll();
+        //Given
+        Title title = new Title();
+        Title title2 = new Title();
+
+        //When
+        titleRepository.save(title);
+        titleRepository.save(title2);
+
+        //Then
+        assertEquals(2, titleRepository.findAll().size());
+
+        //Cleanup
+        try {
+            titleRepository.deleteById(title.getId());
+            titleRepository.deleteById(title2.getId());
+        } catch (Exception e) {
+            System.out.println("There were errors");
+        }
+    }
+
+    @Test
+    void testDeleteById() {
+        //Given
+        Title title = new Title();
+
+        //When
+        titleRepository.save(title);
+        assertTrue(titleRepository.existsById(title.getId()));
+        titleRepository.deleteById(title.getId());
+
+        //Then
+        assertFalse(titleRepository.existsById(title.getId()));
+
+        //CleanUp
+        //No need
+    }
 
     @Test
     public void testCountBookCopies() {
@@ -47,24 +128,4 @@ class TitleServiceTestSuite {
             System.out.println("There were errors");
         }
     }
-
-    @Test
-    void testAddTitle() {
-        //Given
-        Title title = new Title();
-
-        //When
-        titleRepository.save(title);
-
-        //Then
-        assertTrue(titleRepository.existsById(title.getId()));
-
-        //Cleanup
-        try {
-            titleRepository.deleteById(title.getId());
-        } catch (Exception e) {
-            System.out.println("There were errors");
-        }
-    }
-
 }

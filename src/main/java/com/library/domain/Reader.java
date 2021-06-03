@@ -35,5 +35,10 @@ public class Reader {
     )
     private List<Borrow> borrows = new ArrayList<>();
 
-
+    public Reader(String name, String surname, List<Borrow> borrows) {
+        this.name = name;
+        this.surname = surname;
+        this.creationDate = LocalDate.now();
+        this.borrows = borrows;
+    }
 }

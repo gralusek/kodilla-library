@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +28,6 @@ class BookServiceTest {
 
     @Test
     void TestAddBook() {
-
         //Given
         Book book = new Book();
 
@@ -46,10 +46,84 @@ class BookServiceTest {
     }
 
     @Test
+    void testFindById() {
+        //Given
+        Title title = new Title();
+        Book book = new Book(BookStatus.AVAILABLE, title, new ArrayList<>());
+
+        //When
+        titleRepository.save(title);
+        bookRepository.save(book);
+        Long id = book.getId();
+        Optional<Book> book2 = bookRepository.findById(id);
+
+        //Then
+        assertEquals(BookStatus.AVAILABLE, book2.get().getStatus());
+
+        //CleanUp
+        try {
+            titleRepository.deleteById(title.getId());
+            bookRepository.deleteById(book.getId());
+        } catch (Exception e) {
+            System.out.println("There were errors");
+        }
+    }
+
+    @Test
+    void testFindAll() {
+        //Given
+        Title title = new Title();
+        Book book = new Book(BookStatus.AVAILABLE, title, new ArrayList<>());
+        Book book2 = new Book(BookStatus.AVAILABLE, title, new ArrayList<>());
+
+        //When
+        titleRepository.save(title);
+        bookRepository.save(book);
+        bookRepository.save(book2);
+
+        //Then
+        assertEquals(2, bookRepository.findAll().size());
+
+        //Cleanup
+        try {
+            titleRepository.deleteById(title.getId());
+            bookRepository.deleteById(book.getId());
+            bookRepository.deleteById(book2.getId());
+        } catch (Exception e) {
+            System.out.println("There were errors");
+        }
+    }
+
+    @Test
+    void testDeleteById() {
+        //Given
+        Title title = new Title();
+        Book book = new Book(BookStatus.AVAILABLE, title, new ArrayList<>());
+
+        //When
+        titleRepository.save(title);
+        bookRepository.save(book);
+        Long id = book.getId();
+        assertTrue(bookRepository.existsById(id));
+        bookRepository.deleteById(id);
+
+        //Then
+        assertFalse(bookRepository.existsById(id));
+
+        //Cleanup
+        try {
+            titleRepository.deleteById(title.getId());
+        } catch (Exception e) {
+            System.out.println("There were errors");
+        }
+    }
+
+    @Test
     void testChangeStatus() {
         //Given
         Title title = new Title();
         Book book = new Book(BookStatus.AVAILABLE, title, new ArrayList<>());
+
         //When
         assertEquals(BookStatus.AVAILABLE, book.getStatus());
         titleRepository.save(title);
@@ -62,6 +136,7 @@ class BookServiceTest {
         //CleanUp
         try {
             bookRepository.deleteById(book.getId());
+            titleRepository.deleteById(title.getId());
         } catch (Exception e) {
             System.out.println("There were errors");
         }
