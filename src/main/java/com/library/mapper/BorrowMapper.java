@@ -43,7 +43,7 @@ public class BorrowMapper {
                 .collect(Collectors.toList());
     }
 
-    public List<BorrowDto> mapToBottowDtoList(final List<Borrow> borrowList) {
+    public List<BorrowDto> mapToBorrowDtoList(final List<Borrow> borrowList) {
         return borrowList.stream()
                 .map(this::mapToBorrowDto)
                 .collect(Collectors.toList());

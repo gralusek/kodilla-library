@@ -31,7 +31,7 @@ public class BookMapper {
                 book.getId(),
                 book.getStatus(),
                 titleMapper.mapToTileDto(book.getTitle()),
-                borrowMapper.mapToBottowDtoList(book.getBorrows())
+                borrowMapper.mapToBorrowDtoList(book.getBorrows())
         );
     }
 

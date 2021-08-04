@@ -1,9 +1,14 @@
 package com.library.mapper;
 
+import com.library.Dto.BorrowDto;
 import com.library.Dto.ReaderDto;
+import com.library.domain.Borrow;
 import com.library.domain.Reader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReaderMapper {
@@ -27,7 +32,19 @@ public class ReaderMapper {
                 reader.getName(),
                 reader.getSurname(),
                 reader.getCreationDate(),
-                borrowMapper.mapToBottowDtoList(reader.getBorrows())
+                borrowMapper.mapToBorrowDtoList(reader.getBorrows())
         );
+    }
+
+    public List<ReaderDto> mapToReaderDtoList(final List<Reader> readerList) {
+        return readerList.stream()
+                .map(this::mapToReaderDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<Reader> mapToReaderList(final List<ReaderDto> readerDtoList) {
+        return readerDtoList.stream()
+                .map(this::mapToReader)
+                .collect(Collectors.toList());
     }
 }

@@ -52,9 +52,7 @@ public class BorrowService {
                 .orElseThrow(() -> new RuntimeException("Reader with given ID was not found"));
         bookService.changeStatus(book.getId(), BookStatus.BORROWED);
         Borrow borrow = new Borrow(reader, book);
-
         borrowRepository.save(borrow);
-
     }
 
     public void returnBook(long borrowId) {

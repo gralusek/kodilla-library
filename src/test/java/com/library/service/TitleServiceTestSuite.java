@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -127,5 +130,51 @@ class TitleServiceTestSuite {
         } catch (Exception e) {
             System.out.println("There were errors");
         }
+    }
+
+    @Test
+    void testFindTitleByPartOfName() {
+        //Given
+        List<Book> books = new ArrayList<>();
+        Title title1 = new Title("Harry Potter and Chamber of Secrets", "J. K. Rowling",
+                LocalDate.of(1998, 7, 2), books);
+        Title title2 = new Title("Harry Potter and Prinsoner of Azkaban", "J. K. Rowling",
+                LocalDate.of(1999, 7, 8), books);
+        Title title3 = new Title("Game of thrones", "George R. R. Martin",
+                LocalDate.of(1996, 8, 1), books);
+
+        //When
+        titleRepository.save(title1);
+        titleRepository.save(title2);
+        titleRepository.save(title3);
+
+        //Then
+        assertEquals(2, titleService.findByPartOfName("Harry").size());
+
+        //Cleanup
+        try {
+            titleRepository.deleteById(title1.getId());
+            titleRepository.deleteById(title2.getId());
+            titleRepository.deleteById(title3.getId());
+        } catch (Exception e) {
+            System.out.println("There were errors");
+        }
+    }
+
+    @Test
+    void testDeleteTitleByName() {
+        titleRepository.deleteAll();
+        //Given
+        List<Book> books = new ArrayList<>();
+        Title title1 = new Title("Harry Potter and Chamber of Secrets", "J. K. Rowling",
+                LocalDate.of(1998, 7, 2), books);
+
+        //When
+        titleRepository.save(title1);
+        assertTrue(titleRepository.existsById(title1.getId()));
+        titleRepository.deleteByTitle("Harry Potter and Chamber of Secrets");
+
+        //Then
+        assertFalse(titleRepository.existsById(title1.getId()));
     }
 }

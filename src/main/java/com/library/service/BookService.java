@@ -39,6 +39,6 @@ public class BookService {
             bookFromDB.setStatus(status);
             bookRepository.save(bookFromDB);
         });
-
     }
+
 }

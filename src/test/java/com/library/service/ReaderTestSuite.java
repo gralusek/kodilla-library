@@ -16,6 +16,9 @@ public class ReaderTestSuite {
     @Autowired
     ReaderRepository readerRepository;
 
+    @Autowired
+    ReaderService readerService;
+
     @Test
     void testAddReader() {
         //Given

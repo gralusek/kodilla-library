@@ -1,5 +1,6 @@
 package com.library.service;
 
+import com.library.domain.Book;
 import com.library.domain.Title;
 import com.library.repository.TitleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -32,6 +34,10 @@ public class TitleService {
         titleRepository.deleteById(id);
     }
 
+    public void deleteByName(String name) {
+        titleRepository.deleteByTitle(name);
+    }
+
     public int countBookCopies(Long id) {
         return titleRepository
                 .findById(id)
@@ -40,4 +46,10 @@ public class TitleService {
     }
 
 
+    public List<Title> findByPartOfName(String partOfName) {
+        return titleRepository
+                .findAll().stream()
+                .filter(title -> title.getTitle().contains(partOfName))
+                .collect(Collectors.toList());
+    }
 }
