@@ -26,13 +26,16 @@ class BookServiceTest {
     @Autowired
     TitleRepository titleRepository;
 
+    @Autowired
+    TitleService titleService;
+
     @Test
     void TestAddBook() {
         //Given
         Book book = new Book();
 
         //When
-        bookRepository.save(book);
+        bookService.addBook(book);
 
         //Then
         assertTrue(bookRepository.existsById(book.getId()));
@@ -52,10 +55,10 @@ class BookServiceTest {
         Book book = new Book(BookStatus.AVAILABLE, title, new ArrayList<>());
 
         //When
-        titleRepository.save(title);
-        bookRepository.save(book);
+        titleService.addTitle(title);
+        bookService.addBook(book);
         Long id = book.getId();
-        Optional<Book> book2 = bookRepository.findById(id);
+        Optional<Book> book2 = bookService.findById(id);
 
         //Then
         assertEquals(BookStatus.AVAILABLE, book2.get().getStatus());
@@ -82,7 +85,7 @@ class BookServiceTest {
         bookRepository.save(book2);
 
         //Then
-        assertEquals(2, bookRepository.findAll().size());
+        assertEquals(2, bookService.findAll().size());
 
         //Cleanup
         try {
@@ -105,7 +108,7 @@ class BookServiceTest {
         bookRepository.save(book);
         Long id = book.getId();
         assertTrue(bookRepository.existsById(id));
-        bookRepository.deleteById(id);
+        bookService.deleteById(id);
 
         //Then
         assertFalse(bookRepository.existsById(id));

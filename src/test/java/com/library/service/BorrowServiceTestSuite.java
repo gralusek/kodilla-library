@@ -48,7 +48,7 @@ class BorrowServiceTestSuite {
         readerRepository.save(testReader);
         borrowRepository.save(borrow);
         Long id = borrow.getId();
-        Optional<Borrow> borrow2 = borrowRepository.findById(id);
+        Optional<Borrow> borrow2 = borrowService.findById(id);
 
         //Then
         assertEquals(testBook.getId(), borrow2.get().getBook().getId());
@@ -78,7 +78,7 @@ class BorrowServiceTestSuite {
         borrowRepository.save(borrow2);
 
         //Then
-        assertEquals(2, borrowRepository.findAll().size());
+        assertEquals(2, borrowService.findAll().size());
 
         try {
             borrowRepository.deleteById(borrow.getId());
@@ -102,7 +102,7 @@ class BorrowServiceTestSuite {
         readerRepository.save(testReader);
         borrowRepository.save(borrow);
         assertTrue(borrowRepository.existsById(borrow.getId()));
-        borrowRepository.deleteById(borrow.getId());
+        borrowService.deleteById(borrow.getId());
 
         //Then
         assertFalse(borrowRepository.existsById(borrow.getId()));

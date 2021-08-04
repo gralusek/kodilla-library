@@ -5,6 +5,7 @@ import com.library.Dto.BookDto;
 import com.library.Dto.ReaderDto;
 import com.library.Dto.TitleDto;
 import com.library.domain.BookStatus;
+import com.library.domain.Title;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringJUnitWebConfig
@@ -37,9 +39,10 @@ class TitleControllerTestSuite {
     void addTitle() throws Exception{
         //Given
         TitleDto titleDto = new TitleDto();
+        Title title = new Title();
         Gson gson = new Gson();
         String jsonContent = gson.toJson(titleDto);
-
+        when(titleController.addTitle(titleDto)).thenReturn(title);
         //When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders

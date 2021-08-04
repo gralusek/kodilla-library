@@ -33,7 +33,7 @@ class TitleServiceTestSuite {
         Title title = new Title();
 
         //When
-        titleRepository.save(title);
+        titleService.addTitle(title);
 
         //Then
         assertTrue(titleRepository.existsById(title.getId()));
@@ -53,7 +53,7 @@ class TitleServiceTestSuite {
 
         //When
         titleRepository.save(title);
-        Optional<Title> title2 = titleRepository.findById(title.getId());
+        Optional<Title> title2 = titleService.findById(title.getId());
 
         //Then
         assertEquals(title.getId(), title2.get().getId());
@@ -78,7 +78,7 @@ class TitleServiceTestSuite {
         titleRepository.save(title2);
 
         //Then
-        assertEquals(2, titleRepository.findAll().size());
+        assertEquals(2, titleService.findAll().size());
 
         //Cleanup
         try {
@@ -97,7 +97,7 @@ class TitleServiceTestSuite {
         //When
         titleRepository.save(title);
         assertTrue(titleRepository.existsById(title.getId()));
-        titleRepository.deleteById(title.getId());
+        titleService.deleteById(title.getId());
 
         //Then
         assertFalse(titleRepository.existsById(title.getId()));
@@ -172,7 +172,7 @@ class TitleServiceTestSuite {
         //When
         titleRepository.save(title1);
         assertTrue(titleRepository.existsById(title1.getId()));
-        titleRepository.deleteByTitle("Harry Potter and Chamber of Secrets");
+        titleService.deleteByName("Harry Potter and Chamber of Secrets");
 
         //Then
         assertFalse(titleRepository.existsById(title1.getId()));

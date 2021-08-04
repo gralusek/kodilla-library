@@ -25,7 +25,7 @@ public class ReaderTestSuite {
         Reader reader = new Reader();
 
         //When
-        readerRepository.save(reader);
+        readerService.addReader(reader);
 
         //Then
         assertTrue(readerRepository.existsById(reader.getId()));
@@ -47,7 +47,7 @@ public class ReaderTestSuite {
         readerRepository.save(reader);
 
         //Then
-        assertEquals("name", readerRepository.findById(reader.getId()).get().getName());
+        assertEquals("name", readerService.findById(reader.getId()).get().getName());
 
         //CleanUp
         try {
@@ -68,7 +68,7 @@ public class ReaderTestSuite {
         readerRepository.save(reader2);
 
         //Then
-        assertEquals(2, readerRepository.findAll().size());
+        assertEquals(2, readerService.findAll().size());
 
         //CleanUp
         try {
@@ -87,7 +87,7 @@ public class ReaderTestSuite {
         //When
         readerRepository.save(reader);
         assertTrue(readerRepository.existsById(reader.getId()));
-        readerRepository.deleteById(reader.getId());
+        readerService.deleteById(reader.getId());
 
         //Then
         assertFalse(readerRepository.existsById(reader.getId()));
